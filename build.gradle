@@ -26,7 +26,7 @@ buildscript {
 
 task generateCertificates << {
   buildDir.mkdirs()
-  File svgTemplate = file('templates/certificate_eh_blue.svg')
+  File svgTemplate = file("templates/${certificateTemplate}")
   int fileIndex = 1
   forEachPerson { name, certId ->
     logger.quiet "> Generating badge for ${name}"
