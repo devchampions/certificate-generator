@@ -32,7 +32,7 @@ task generateCertificates << {
     logger.quiet "> Generating badge for ${name}"
     File svgCertificateFile = file("${buildDir}/${certId}.svg")    
     svgCertificateFile.text = modifySVG(svgTemplate.text, name, certId)
-    renderCertificateImage(svgCertificateFile, file("${buildDir}/${certId}"), certId)
+    renderCertificateImage(svgCertificateFile, file("${buildDir}/rendered/${certId}"), certId)
     svgCertificateFile.delete()
   }
 }
@@ -40,7 +40,18 @@ task generateCertificates << {
 generateCertificates.logging.captureStandardOutput LogLevel.INFO
 generateCertificates.logging.captureStandardError LogLevel.INFO
 
-task build(dependsOn: generateCertificates)
+task copyCertificateImages(type: Copy, dependsOn: generateCertificates) {
+  from fileTree("${buildDir}/rendered").include('**/*.jpg').files
+  into "${buildDir}/images"
+}
+
+task zipCertificateImages(type: Zip, dependsOn: copyCertificateImages) {
+  from "${buildDir}/images"
+  archiveName 'certs.zip'
+  destinationDir buildDir
+}
+
+task build(dependsOn: [ generateCertificates, copyCertificateImages, zipCertificateImages])
 
 task clean(type: Delete) {
   delete buildDir
