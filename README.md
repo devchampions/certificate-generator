@@ -10,6 +10,7 @@ To generate certificates do the following:
         John Fox;YR9XZC4AG0
         ...
 
+     To generate random certificate ids, you can use the `random.groovy` script.
   4. Run the following command to generate JPEG files with certificates:
 
         gradlew clean build \

@@ -23,7 +23,6 @@ buildscript {
   }
 }
 
-
 task generateCertificates << {
   buildDir.mkdirs()
   File svgTemplate = file("templates/${certificateTemplate}")
@@ -39,9 +38,12 @@ task generateCertificates << {
 
 generateCertificates.logging.captureStandardOutput LogLevel.INFO
 generateCertificates.logging.captureStandardError LogLevel.INFO
+generateCertificates.outputs.dir file("${buildDir}/rendered")
 
 task copyCertificateImages(type: Copy, dependsOn: generateCertificates) {
-  from fileTree("${buildDir}/rendered").include('**/*.jpg').files
+  forEachPerson { name, certId ->
+    from ("${buildDir}/rendered/${certId}") { include '*.jpg' }
+  }
   into "${buildDir}/images"
 }
 
