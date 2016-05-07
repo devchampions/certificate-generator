@@ -23,5 +23,5 @@ To generate certificates do the following:
      For example:
 
         gradlew clean build 
-                -PdataFile=data_dm.csv 
-                -PcertificateTemplate=certificate_dm_blue.svg 
+                -PdataFile=/work/DEVCHAMPIONS/devchampions_certs/data_dm_2016.05.09.csv  
+                -PcertificateTemplate=certificate_dm_blue_2016.05.09.svg 
