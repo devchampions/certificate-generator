@@ -10,9 +10,18 @@ To generate certificates do the following:
         John Fox;YR9XZC4AG0
         ...
 
-     To generate random certificate ids, you can use the `random.groovy` script.
-  4. Run the following command to generate JPEG files with certificates:
+     To generate random strings that can be used as certificate identifiers, you can use the `random.groovy` script.
 
-        gradlew clean build \
-                -PdataFile=</path/to/data/file.csv> \
+     Please, note, that *Economica* font supports only the Western character set. The *CSV* file should be encoded in *UTF-8* for special letters (e.g. ü) to appear correctly. Not all of the special letters will be rendered though due to font limitations. 
+
+  4. Run the following command to generate *JPEG* files with certificates:
+
+        gradlew clean build 
+                -PdataFile=</path/to/data/file.csv> 
                 -PcertificateTemplate=<template_file_name.svg>
+
+     For example:
+
+        gradlew clean build 
+                -PdataFile=data_dm.csv 
+                -PcertificateTemplate=certificate_dm_blue.svg 
