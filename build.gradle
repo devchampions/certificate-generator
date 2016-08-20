@@ -1,5 +1,6 @@
 
 import org.apache.batik.transcoder.image.JPEGTranscoder
+import org.apache.batik.transcoder.SVGAbstractTranscoder
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
 
@@ -10,16 +11,21 @@ import java.awt.image.BufferedImage
 import java.awt.Graphics2D
 import java.awt.Color
 
+import org.apache.batik.transcoder.TranscoderException
+import org.apache.batik.transcoder.TranscoderInput
+import org.apache.batik.transcoder.TranscoderOutput
+import org.apache.fop.svg.PDFTranscoder
+
 import static javax.imageio.ImageIO.*
 
 
 buildscript {
   repositories { mavenCentral() }
   dependencies {
-    classpath('batik:batik-transcoder:1.6-1') {
-      exclude module: 'fop'
-    }
-    classpath 'xerces:xercesImpl:2.11.0'
+    classpath 'org.apache.xmlgraphics:batik-transcoder:1.8'
+    classpath 'org.apache.xmlgraphics:batik-codec:1.7'
+    classpath 'org.apache.xmlgraphics:xmlgraphics-commons:2.1'
+    classpath 'org.apache.xmlgraphics:fop:2.1'
   }
 }
 
@@ -32,6 +38,8 @@ task generateCertificates << {
     File svgCertificateFile = file("${buildDir}/${certId}.svg")    
     svgCertificateFile.text = modifySVG(svgTemplate.text, name, certId)
     renderCertificateImage(svgCertificateFile, file("${buildDir}/rendered/${certId}"), certId)
+    renderCertificateHTML(file("${buildDir}/rendered/${certId}"), certId)
+    renderCertificatePDF(svgCertificateFile, file("${buildDir}/rendered/${certId}"), certId)
     svgCertificateFile.delete()
   }
 }
@@ -75,10 +83,24 @@ def modifySVG(String svgText, String name, String certId) {
 def renderCertificateImage(File svgFile, File baseDir, String baseName) {
   baseDir.mkdirs()
   JPEGTranscoder t = new JPEGTranscoder()
+  t.addTranscodingHint(SVGAbstractTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, new Float((float) (25.4 / 300)))
   t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(1))
   String svgURI = svgFile.toURL().toString()
   t.transcode(new TranscoderInput(svgURI), new TranscoderOutput(new FileOutputStream("${baseDir}/${baseName}.jpg")))
+}
+
+
+def renderCertificateHTML(File baseDir, String baseName) {
   new File(baseDir, 'index.html').text = """<html><body style="margin: 0px;"><img height="100%" src="${baseName}.jpg"/></body></html>"""
+}
+
+
+def renderCertificatePDF(File svgFile, File baseDir, String baseName) {
+  baseDir.mkdirs()
+  PDFTranscoder t = new PDFTranscoder()
+  t.addTranscodingHint(SVGAbstractTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, new Float((float) (25.4 / 300)))
+  String svgURI = svgFile.toURL().toString()
+  t.transcode(new TranscoderInput(svgURI), new TranscoderOutput(new FileOutputStream("${baseDir}/${baseName}.pdf")))
 }
 
 
