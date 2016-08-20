@@ -1,6 +1,24 @@
 
+import groovy.xml.XmlUtil
+import org.apache.avalon.framework.configuration.Configuration
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder
+import org.apache.avalon.framework.container.ContainerUtil
+import org.apache.batik.transcoder.TranscoderException
+import org.apache.batik.transcoder.TranscoderInput
+import org.apache.batik.transcoder.TranscoderOutput
+import org.apache.fop.svg.PDFTranscoder
+
+import static java.lang.Boolean.FALSE
+import static java.nio.charset.StandardCharsets.UTF_8
+import static org.apache.batik.transcoder.SVGAbstractTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER
+import static org.apache.batik.transcoder.XMLAbstractTranscoder.KEY_XML_PARSER_VALIDATING
+import static org.apache.fop.svg.AbstractFOPTranscoder.KEY_AUTO_FONTS
+import static org.apache.fop.svg.AbstractFOPTranscoder.KEY_STROKE_TEXT
+
 import org.apache.batik.transcoder.image.JPEGTranscoder
 import org.apache.batik.transcoder.SVGAbstractTranscoder
+import org.apache.batik.transcoder.XMLAbstractTranscoder
+import org.apache.fop.svg.AbstractFOPTranscoder
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
 
@@ -26,6 +44,7 @@ buildscript {
     classpath 'org.apache.xmlgraphics:batik-codec:1.7'
     classpath 'org.apache.xmlgraphics:xmlgraphics-commons:2.1'
     classpath 'org.apache.xmlgraphics:fop:2.1'
+    classpath 'org.apache.pdfbox:fontbox:1.8.12'
   }
 }
 
@@ -97,10 +116,32 @@ def renderCertificateHTML(File baseDir, String baseName) {
 
 def renderCertificatePDF(File svgFile, File baseDir, String baseName) {
   baseDir.mkdirs()
-  PDFTranscoder t = new PDFTranscoder()
-  t.addTranscodingHint(SVGAbstractTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, new Float((float) (25.4 / 300)))
+  PDFTranscoder t = configureFonts(new PDFTranscoder())
   String svgURI = svgFile.toURL().toString()
   t.transcode(new TranscoderInput(svgURI), new TranscoderOutput(new FileOutputStream("${baseDir}/${baseName}.pdf")))
+}
+
+
+def configureFonts(PDFTranscoder t) {
+  DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder()
+  Configuration cfg = cfgBuilder.build(rendererConfiguration)
+  ContainerUtil.configure(t, cfg)
+  t.addTranscodingHint(KEY_PIXEL_UNIT_TO_MILLIMETER, new Float((float) (25.4 / 300)))
+  t.addTranscodingHint(KEY_XML_PARSER_VALIDATING, FALSE)
+  t.addTranscodingHint(KEY_STROKE_TEXT, FALSE)
+  t.addTranscodingHint(KEY_AUTO_FONTS, false)
+  t
+}
+
+
+InputStream getRendererConfiguration() {
+  File configFile = new File("fonts/pdf-renderer-cfg.xml")
+  if (configFile.exists()) {
+    println "DEBUG: Using PDF renderer configuration: ${configFile.absolutePath}"
+    return configFile.newInputStream()
+  } else {
+    throw new RuntimeException('PDF renderer configuration is not found!')
+  }
 }
 
 
