@@ -65,7 +65,7 @@ task generateCertificates << {
 
 generateCertificates.logging.captureStandardOutput LogLevel.INFO
 generateCertificates.logging.captureStandardError LogLevel.INFO
-generateCertificates.outputs.dir file("${buildDir}/rendered")
+// generateCertificates.outputs.dir file("${buildDir}/rendered")
 
 task copyCertificateImages(type: Copy, dependsOn: generateCertificates) {
   forEachPerson { name, certId ->
@@ -146,10 +146,13 @@ InputStream getRendererConfiguration() {
 
 
 def forEachPerson(Closure cl) {
-  def lines = file(project.hasProperty('dataFile') ? project.dataFile : 'data.csv').readLines("UTF-8").drop(1).collect { it.trim() }.findAll { it.contains(';') }
-  lines.each { String line ->
-    def fields = line.split(';')
-    cl(fields[0], fields[1])
+  File dataFile = file(project.hasProperty('dataFile') ? project.dataFile : 'data.csv')
+  if (dataFile.exists()) {
+    def lines = dataFile.readLines("UTF-8").drop(1).collect { it.trim() }.findAll { it.contains(';') }
+    lines.each { String line ->
+      def fields = line.split(';')
+      cl(fields[0], fields[1])
+    }
   }
 }
 
