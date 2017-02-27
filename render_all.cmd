@@ -9,3 +9,4 @@
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_xa_2016.09.08.csv -PcertificateTemplate=certificate_xa_blue_2016.09.08.svg
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_dm_2016.09.23.csv -PcertificateTemplate=certificate_dm_blue_2016.09.23.svg 
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2016.10.20.csv -PcertificateTemplate=certificate_j8_blue_2016.10.20.svg 
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2017.02.23.csv -PcertificateTemplate=certificate_j8_blue_2017.02.23.svg 
