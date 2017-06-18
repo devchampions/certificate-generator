@@ -11,3 +11,6 @@
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2016.10.20.csv -PcertificateTemplate=certificate_j8_blue_2016.10.20.svg 
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2017.02.23.csv -PcertificateTemplate=certificate_j8_blue_2017.02.23.svg 
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2017.04.27.csv -PcertificateTemplate=certificate_j8_blue_2017.04.27.svg 
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2017.05.08.csv -PcertificateTemplate=certificate_j8_blue_2017.05.08.svg 
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_xa_2017.05.08.csv -PcertificateTemplate=certificate_xa_blue_2017.05.08.svg
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_cd_2017.06.12.csv -PcertificateTemplate=certificate_cd_blue_2017.06.12.svg 

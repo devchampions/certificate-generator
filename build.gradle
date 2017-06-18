@@ -53,7 +53,7 @@ task generateCertificates << {
   File svgTemplate = file("templates/${certificateTemplate}")
   int fileIndex = 1
   forEachPerson { name, certId ->
-    logger.quiet "> Generating badge for ${name}"
+    logger.quiet "> Generating certificate for ${name}"
     File svgCertificateFile = file("${buildDir}/${certId}.svg")    
     svgCertificateFile.text = modifySVG(svgTemplate.text, name, certId)
     renderCertificateImage(svgCertificateFile, file("${buildDir}/rendered/${certId}"), certId)
