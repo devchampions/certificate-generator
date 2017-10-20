@@ -93,7 +93,7 @@ def modifySVG(String svgText, String name, String certId) {
   certNameElement.replaceBody(name)
   def certUrlElement = svg.depthFirst().find { it.@id == 'cert-url' }
   def certUrl = "http://certs.devchampions.com/${certId}"
-  project.logger.quiet certUrl
+  project.logger.quiet "${name} - ${certUrl}"
   certUrlElement.replaceBody(certUrl)
   XmlUtil.serialize(svg)
 }
