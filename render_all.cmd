@@ -1,5 +1,5 @@
 @call gradlew clean
-@set CERT_HOME=E:/Work/AESTAS/WEBSITES/certs.devchampions.com
+@set CERT_HOME=E:/Work/WEBSITES/certs.devchampions.com
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_eh_2016.03.10.csv -PcertificateTemplate=certificate_eh_blue_2016.03.10.svg 
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_sk_2016.03.15.csv -PcertificateTemplate=certificate_sk_blue_2016.03.15.svg 
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_cd_2016.04.21.csv -PcertificateTemplate=certificate_cd_blue_2016.04.21.svg 
@@ -23,4 +23,7 @@
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_sk_2017.10.16.csv -PcertificateTemplate=certificate_sk_blue_2017.10.16.svg 
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_java_2018.10.01.csv -PcertificateTemplate=certificate_java_blue_2018.10.01.svg 
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_xa_2018.10.11.csv -PcertificateTemplate=certificate_xa_blue_2018.10.11.svg
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_xa_2018.12.19.csv -PcertificateTemplate=certificate_xa_blue_2018.12.19.svg
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2019.01.31.csv -PcertificateTemplate=certificate_j8_blue_2019.01.31.svg
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_xa_2019.03.04.csv -PcertificateTemplate=certificate_xa_blue_2019.03.04.svg
 
