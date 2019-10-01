@@ -26,4 +26,9 @@
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_xa_2018.12.19.csv -PcertificateTemplate=certificate_xa_blue_2018.12.19.svg
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_j8_2019.01.31.csv -PcertificateTemplate=certificate_j8_blue_2019.01.31.svg
 @call gradlew build -S -PdataFile=%CERT_HOME%/data_xa_2019.03.04.csv -PcertificateTemplate=certificate_xa_blue_2019.03.04.svg
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_java_2019.07.18.csv -PcertificateTemplate=certificate_java_blue_2019.07.18.svg 
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_java_2019.09.23.csv -PcertificateTemplate=certificate_java_blue_2019.09.23.svg 
+@call gradlew build -S -PdataFile=%CERT_HOME%/data_java_2019.09.26.csv -PcertificateTemplate=certificate_java_blue_2019.09.26.svg 
+
+
 
